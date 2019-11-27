@@ -14,6 +14,8 @@
 """
 import logging
 
+import ephem
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
@@ -30,6 +32,9 @@ PROXY = {
     }
 }
 
+today = '2019/11/27'
+planet_dict = {'Mars': ephem.Mars(today), 'Venus': ephem.Venus(today), 'Saturn': ephem.Saturn(today), 'Jupiter': ephem.Jupiter(today),
+               'Neptune': ephem.Neptune(today), 'Uranus': ephem.Uranus(today), 'Mercury': ephem.Mercury(today)}
 
 def greet_user(bot, update):
     text = 'Вызван /start'
@@ -42,18 +47,23 @@ def talk_to_me(bot, update):
     print(user_text)
     update.message.reply_text(user_text)
 
-def which_const(bot, update):
+def which_constellation(bot, update):
     planet_name = update.message.text.split()[1]
-    print(planet_name)
-    update.message.reply_text(planet_name)
+    ephem_body = planet_dict.get(planet_name, None)
+    if ephem_body!=None:
+        constellation = ephem.constellation(planet_dict[planet_name])
+        update.message.reply_text(constellation[1])
+    else:
+        update.message.reply_text('I don\'t know this planet!')
 
 
 def main():
-    mybot = Updater("862444747:AAG3cOpouBEFoqFZYlARX12aKnJVzyew8BE", request_kwargs=PROXY)
-    
+    # mybot = Updater("1050767852:AAGJLxpdMCIB3q_m3TtHrWaMUTj15-Nvfps", request_kwargs=PROXY)
+    mybot = Updater("1050767852:AAGJLxpdMCIB3q_m3TtHrWaMUTj15-Nvfps")
+
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
-    dp.add_handler(CommandHandler("planet", which_const))
+    dp.add_handler(CommandHandler("planet", which_constellation))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
     
     mybot.start_polling()
