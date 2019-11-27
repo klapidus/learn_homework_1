@@ -19,7 +19,18 @@ def ask_user():
     """
     Замените pass на ваш код
     """
-    pass
+    q_and_a = {'How are you?': 'Just fine!', 'What are you doing?': 'Working', 'How old are you?': '100500',
+               'Where do you come from?': 'Neverland', 'Where are you going?': 'Nowhere'}
+    while True:
+        q = input('Your question: ')
+        if 'Goodbye'==q or 'bye'==q:
+            print('Goodbye!')
+            break
+        a = q_and_a.get(q,0)
+        if not a==0:
+            print(a)
+        else:
+            print('I don\'t know the answer')
     
 if __name__ == "__main__":
     ask_user()

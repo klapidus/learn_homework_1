@@ -41,13 +41,19 @@ def talk_to_me(bot, update):
     user_text = update.message.text 
     print(user_text)
     update.message.reply_text(user_text)
- 
+
+def which_const(bot, update):
+    planet_name = update.message.text.split()[1]
+    print(planet_name)
+    update.message.reply_text(planet_name)
+
 
 def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY)
+    mybot = Updater("862444747:AAG3cOpouBEFoqFZYlARX12aKnJVzyew8BE", request_kwargs=PROXY)
     
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler("planet", which_const))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
     
     mybot.start_polling()

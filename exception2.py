@@ -16,7 +16,14 @@ def get_summ(num_one, num_two):
     """
     Замените pass на ваш код
     """
-    pass
+    try:
+        num1 = int(num_one)
+        num2 = int(num_two)
+        return num1+num2
+    except ValueError:
+        print('Can\'t cast to int!, return None')
+        return None
+
     
 if __name__ == "__main__":
     print(get_summ(2, 2))
